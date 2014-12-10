@@ -11,10 +11,17 @@ public class BaseAliveObject : MonoBehaviour
 	private float CurrentSpeed;				//текущая скорость перемещения
 	public float MaxSpeed;					//максимальная скорость
 
+	public Transform BottomPoint;			//Точка из которой стреляем лучем, для определения касаемся ли мы пола или нет
 	private bool Grounded;					//Касается земли или нет
+
+	private Transform myTransform;			//кешируем трансформ
+	public LayerMask floorLayerMask;		//layers для определения пола
+	private float DistanceToFloor = 0.2f;	//Длина луча до пола
 
 	void Start()
 	{
+		myTransform = this.transform;
+
 		CurrentSpeed = 0;
 		CurrentHealth = MaxHealth;
 		Grounded = false;
@@ -22,7 +29,24 @@ public class BaseAliveObject : MonoBehaviour
 
 	void Update()
 	{
-		
+		FloorDetect();
+	}
+
+	private void FloorDetect()
+	{
+		//Определяем касаемся мы пола или нет
+		RaycastHit2D hit = Physics2D.Raycast(BottomPoint.position, -Vector2.up,DistanceToFloor,floorLayerMask);
+
+		if (hit.collider != null)
+		{
+			//если попали
+			Grounded = true;
+		}
+		else
+		{
+			//пола снизу нет
+			Grounded = false;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) 
