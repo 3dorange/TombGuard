@@ -9,6 +9,16 @@ public class BaseTrap : MonoBehaviour
 	public float RespTime;				//Время респа ловушки
 	private float ActivatedTime;		//Время активации ловушки
 
+	protected virtual void Start()
+	{
+
+	}
+
+	protected virtual void Update()
+	{
+		
+	}
+
 	void OnMouseDown()
 	{
 		ActivateTrap();
@@ -22,6 +32,11 @@ public class BaseTrap : MonoBehaviour
 			ActivatedTime = Time.time;
 			MakeTrap();
 		}
+	}
+
+	public float GetHit()
+	{
+		return Damage;
 	}
 
 	protected virtual void MakeTrap()
