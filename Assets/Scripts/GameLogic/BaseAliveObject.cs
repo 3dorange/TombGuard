@@ -186,9 +186,33 @@ public class BaseAliveObject : MonoBehaviour
 				ChooseWay(other.GetComponent<MakeDecisionZone>());
 			break;
 
+			case "Trap":
+				AddDamage(other.transform.parent.GetComponent<BaseTrap>().GetHit());
+			break;
+
+			case "Monster":
+				AddDamage(other.GetComponent<BaseMonster>().GetHit());
+			break;
+
 			default:
 				break;
 		}
+	}
+
+	private void AddDamage(float damage)
+	{
+		//получаем повреждения
+		CurrentHealth -= damage;
+
+		if (CurrentHealth <=0)
+		{
+			Death();
+		}
+	}
+
+	protected virtual void Death()
+	{
+		Destroy(this.gameObject);
 	}
 
 	private void ChooseWay(MakeDecisionZone decisionZone)
